@@ -1,0 +1,20 @@
+[touchAndDragHandlerOnFlickable]
+windows gcc
+[touchDragFlickableBehindSlider]
+windows gcc
+[touchDragFlickableBehindButton]
+windows gcc
+# QTBUG-103061
+[touchDragFlickableBehindItemWithHandlers]
+android
+[mouseDragFlickableBehindItemWithHandlers]
+android
+[touchAndDragHandlerOnFlickable]
+android
+# QTBUG-118063
+[nativeGesturePinchOnFlickableWithParentTapHandler]
+opensuse-leap
+# QTBUG-95887
+[pinchHandlerOnFlickable]
+opensuse-leap
+

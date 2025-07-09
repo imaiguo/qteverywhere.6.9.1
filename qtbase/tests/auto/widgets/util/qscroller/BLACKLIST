@@ -1,0 +1,11 @@
+[scrollTo]
+macos
+
+[scroll]
+macos
+# QTBUG-87409
+[scrollTo]
+android
+
+[overshoot]
+macos

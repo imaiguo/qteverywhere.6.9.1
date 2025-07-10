@@ -9,6 +9,7 @@
 - GNU gperf binary.
 - GNU bison binary.
 - GNU flex binary.
+- QtWebEngine Build requires Windows 11 SDK at least version 10.0.26100.0
 
 ## 1 Windows:
 
@@ -27,13 +28,12 @@
 > cmd
 > "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
 > set Path=D:\devtools\Strawberry\perl\bin;D:\workspace\qteverywhere.6.9.1\gnuwin32\bin;%Path%
-> set OPENSSL_ROOT_DIR=D:/devtools/openssl.3.0.8/debug/
+> set OPENSSL_ROOT_DIR=D:/devtools/openssl.3.0.8/
 >
 > ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -debug-and-release -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
-> -webengine-jumbo-build 0
-> -webengine-kerberos
-> cmake --build .. --parallel
-> cmake --install ..
+>
+> cmake --build . --parallel
+> cmake --install .
 >
 ```
 
@@ -42,7 +42,7 @@
 
 ### 1.3 开发环境设置
 
-set PATH=C:\Qt\Qt-major.minor.patch\bin;%PATH%
+set PATH=D:\devtools\Qt.6.9.1\bin;%PATH%
 
 
 ### 1.6 报错

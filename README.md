@@ -22,7 +22,7 @@
 >
 ```
 
-### 1.1 构建debug版本
+### 1.1 构建动态库
 ```bash
 > mkdir build & cd build
 > cmd
@@ -33,11 +33,12 @@
 > ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -debug-and-release -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
 >
 > cmake --build . --parallel
+> ninja -j 8
 > cmake --install .
->
+> ninja install
 ```
 
-### 1.2 构建静态版本
+### 1.2 构建静态库
 > ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -debug-and-release -static -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
 
 ### 1.3 开发环境设置
@@ -54,3 +55,6 @@ set PATH=D:\devtools\Qt.6.9.1\bin;%PATH%
 
 ## 参考
 - Qt WebEngine Platform Notes https://doc.qt.io/qt-6/qtwebengine-platform-notes.html
+
+
+## 源码下载 [https://download.qt.io/]

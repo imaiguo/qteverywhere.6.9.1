@@ -24,22 +24,23 @@
 
 ### 1.1 构建动态库
 ```bash
-> mkdir build & cd build
+> mkdir buildqt & cd buildqt
 > cmd
 > "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-> set Path=D:\devtools\Strawberry\perl\bin;D:\workspace\qteverywhere.6.9.1\gnuwin32\bin;%Path%
+> set Path=D:\devtools\Strawberry\perl\bin;D:\workspace\qteverywhere.6.9.1\gnuwin32\bin;D:\workspace\qteverywhere.6.9.1\qtwebengine\tools\nodejs;%Path%
 > set OPENSSL_ROOT_DIR=D:/devtools/openssl.3.0.8/
 >
-> ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -debug-and-release -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
+> ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -shared -debug-and-release -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
 >
 > cmake --build . --parallel
-> ninja -j 8
+> ninja -j 30
+>
 > cmake --install .
 > ninja install
 ```
 
 ### 1.2 构建静态库
-> ..\configure.bat -prefix D:\devtools\Qt.6.9.1 -debug-and-release -static -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
+> ..\configure.bat -prefix D:\devtools\Qt.6.9.1\static -static -debug-and-release -opensource -confirm-license -no-rpath -verbose -accessibility -no-directfb -no-use-gold-linker -nomake examples -nomake tests -opengl -openssl-linked -webengine-proprietary-codecs -webengine-jumbo-build 0
 
 ### 1.3 开发环境设置
 

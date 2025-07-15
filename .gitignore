@@ -1,2 +1,4 @@
 buildqt
 __pycache__
+qtbase/src/android/jar/.gradle/
+qtbase/src/android/templates/.gradle/

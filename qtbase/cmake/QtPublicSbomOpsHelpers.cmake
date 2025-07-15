@@ -376,7 +376,7 @@ function(_qt_internal_sbom_generate_json)
     set(content "
         message(STATUS \"Generating JSON: \${QT_SBOM_OUTPUT_PATH}.json\")
         execute_process(
-            COMMAND ${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE} -m spdx_tools.spdx.clitools.pyspdxtools
+            COMMAND \"${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE}\" -m spdx_tools.spdx.clitools.pyspdxtools
             -i \"\${QT_SBOM_OUTPUT_PATH}\" -o \"\${QT_SBOM_OUTPUT_PATH}.json\"
             RESULT_VARIABLE res
         )
@@ -554,7 +554,7 @@ function(_qt_internal_sbom_generate_tag_value_spdx_document)
             \"Generating tag/value SPDX document: ${output_path} from \"
         \"${arg_INPUT_JSON_FILE_PATH}\")
         execute_process(
-            COMMAND ${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE} -m spdx_tools.spdx.clitools.pyspdxtools
+            COMMAND \"${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE}\" -m spdx_tools.spdx.clitools.pyspdxtools
             -i \"${arg_INPUT_JSON_FILE_PATH}\" -o \"${output_path}\"
             RESULT_VARIABLE res
         )
@@ -581,7 +581,7 @@ function(_qt_internal_sbom_verify_valid)
     set(content "
         message(STATUS \"Verifying: \${QT_SBOM_OUTPUT_PATH}\")
         execute_process(
-            COMMAND ${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE} -m spdx_tools.spdx.clitools.pyspdxtools
+            COMMAND \"${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE}\" -m spdx_tools.spdx.clitools.pyspdxtools
             -i \"\${QT_SBOM_OUTPUT_PATH}\"
             RESULT_VARIABLE res
         )
@@ -607,7 +607,7 @@ function(_qt_internal_sbom_verify_ntia_compliant)
     set(content "
         message(STATUS \"Checking for NTIA compliance: \${QT_SBOM_OUTPUT_PATH}\")
         execute_process(
-            COMMAND ${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE} -m ntia_conformance_checker.main
+            COMMAND \"${QT_INTERNAL_SBOM_PYTHON_EXECUTABLE}\" -m ntia_conformance_checker.main
             --file \"\${QT_SBOM_OUTPUT_PATH}\"
             RESULT_VARIABLE res
         )

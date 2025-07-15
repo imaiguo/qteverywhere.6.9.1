@@ -58,3 +58,10 @@
 - Qt WebEngine Platform Notes https://doc.qt.io/qt-6/qtwebengine-platform-notes.html
 
 ## 源码下载 [https://download.qt.io/]
+
+## 合并补丁
+```bash
+>
+> git apply .\cve\CVE-2025-6338-qtbase-6.9.patch --directory=qtbase
+> git apply .\cve\CVE-2025-6338-qtbase-6.9.patch --directory=qtbase --reject
+```

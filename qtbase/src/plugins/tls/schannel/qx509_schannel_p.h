@@ -40,7 +40,7 @@ public:
     static bool importPkcs12(QIODevice *device, QSslKey *key, QSslCertificate *cert,
                              QList<QSslCertificate> *caCertificates,
                              const QByteArray &passPhrase);
-private:
+
     const CERT_CONTEXT *certificateContext = nullptr;
 
     Q_DISABLE_COPY_MOVE(X509CertificateSchannel);

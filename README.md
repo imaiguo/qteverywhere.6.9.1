@@ -51,11 +51,13 @@
 ### 1.3 开发环境设置
 
 ```bash
-> set PATH=D:\devtools\Qt.6.9.1\bin;%PATH%
+> "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+> set Path=D:\devtools\Qt.6.9.1\bin;D:\devtools\openssl.3.0.8\bin;%Path%
 ```
 
 ## 参考
 - Qt WebEngine Platform Notes https://doc.qt.io/qt-6/qtwebengine-platform-notes.html
+- Qt6 All Classes https://doc.qt.io/archives/qt-6.7/classes.html
 
 ## 源码下载 [https://download.qt.io/]
 

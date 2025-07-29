@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "Screen.h"
+#include "Menu.h"
 
 //截屏窗口类
 class ScreenWidget : public QWidget{
@@ -20,6 +21,8 @@ private:
     QPixmap *m_bgScreen;      
     //坐标
     QPoint m_movePos;
+    // 悬浮菜单
+    Menu m_FloatMenu;
 
 protected:
     void contextMenuEvent(QContextMenuEvent *);

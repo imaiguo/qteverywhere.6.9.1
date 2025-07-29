@@ -4,7 +4,6 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QApplication>
-#include <QScreen>
 #include <QDateTime>
 #include <QMouseEvent>
 #include <QMimeData>
@@ -19,17 +18,19 @@
 #include <Windows.h>
 
 #include "ScreenWidget.h"
+#include "Config.h"
 
 #define STRDATETIME qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
 
 ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
-    m_menu = new QMenu(this);
-    m_menu->addAction("保存", this, &ScreenWidget::saveScreenCrop);
-    m_menu->addAction("保存全屏", this, &ScreenWidget::saveFullScreen);
-    m_menu->addAction("另存", this, &ScreenWidget::saveScreenCropToPath);
-    m_menu->addAction("另存全屏", this, &ScreenWidget::saveFullToPath);
-    m_menu->addAction("退出", this, &ScreenWidget::hide);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
 
+    // TODO 添加icon图片
+    m_menu = new QMenu(this);
+    m_menu->addAction("确认", this, &ScreenWidget::saveScreenCrop);
+    m_menu->addAction("保存", this, &ScreenWidget::saveScreenCropToPath);
+    m_menu->addAction("保存全屏", this, &ScreenWidget::saveFullToPath);
+    m_menu->addAction("取消", this, &ScreenWidget::saveFullScreen);
     //取得屏幕大小
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QRect screenRect = QApplication::primaryScreen()->geometry();
@@ -39,6 +40,10 @@ ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
     m_screen = new Screen(screenRect.size());
     //保存全屏图像
     m_fullScreen = new QPixmap();
+
+    m_FloatMenu.setParent(this);
+    m_FloatMenu.initUI();
+    m_FloatMenu.move(screenRect.width() - 180 - 50, screenRect.height() - Config::ButtonSize*2);
 }
 
 void ScreenWidget::paintEvent(QPaintEvent *){
@@ -66,6 +71,8 @@ void ScreenWidget::paintEvent(QPaintEvent *){
     painter.setPen(pen);
     painter.drawText(x + 2, y - 8, tr("截图范围：( %1 x %2 ) - ( %3 x %4 )  图片大小：( %5 x %6 )")
                      .arg(x).arg(y).arg(x + w).arg(y + h).arg(w).arg(h));
+
+    m_FloatMenu.move(m_screen->getRightDown().x() - 180, m_screen->getRightDown().y());
 }
 
 void ScreenWidget::showEvent(QShowEvent *){

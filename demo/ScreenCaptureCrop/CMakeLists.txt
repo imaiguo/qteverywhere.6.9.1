@@ -22,8 +22,13 @@ message("current Qt version is[" ${QT_VERSION_MAJOR}  "]")
 
 set(SRC
         ./src/Main.cpp
+        ./src/Menu.cpp
         ./src/Screen.cpp
         ./src/ScreenWidget.cpp
+        ./src/ButtonWithTip.cpp
+        ./src/RoundTip.cpp
+        ./src/Tools.cpp
+        ScreenCapture.qrc
 )
 
 add_executable(${APPNAME}

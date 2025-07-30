@@ -29,10 +29,10 @@ ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
 
     // TODO 添加icon图片
     m_menu = new QMenu(this);
-    m_menu->addAction("确认", this, &ScreenWidget::ok);
-    m_menu->addAction("保存", this, &ScreenWidget::save);
-    m_menu->addAction("保存全屏", this, &ScreenWidget::saveFullScreen);
-    m_menu->addAction("取消", this, [this](){this->setHidden(true);});
+    m_menu->addAction(QIcon(":ok.png"), "确认", this, &ScreenWidget::ok);
+    m_menu->addAction(QIcon(":crop.png"), "保存", this, &ScreenWidget::save);
+    m_menu->addAction(QIcon(":fullscreen.png"), "保存全屏", this, &ScreenWidget::saveFullScreen);
+    m_menu->addAction(QIcon(":close.png"), "取消", this, [this](){this->setHidden(true);});
     //取得屏幕大小
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QRect screenRect = QApplication::primaryScreen()->geometry();

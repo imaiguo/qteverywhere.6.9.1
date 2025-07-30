@@ -54,11 +54,15 @@ bool FloatButton::initUI(QString icon){
     QRect screenRect = QApplication::desktop()->screenGeometry();
 #endif
 
-    m_TrayMenu.addAction(QObject::tr("开始截图"), [&]() {qDebug()<<"打开开始截图."; this->setHidden(true); Sleep(100); PatternTool::Singleton<ScreenWidget>::instance()->showFullScreen();});
+    m_TrayMenu.addAction(QIcon(":deskcut.jpg"), QObject::tr("开始截图"), [&]() {
+        qDebug()<<"打开开始截图.";
+        this->setHidden(true);
+        Sleep(100);
+        PatternTool::Singleton<ScreenWidget>::instance()->showFullScreen();
+    });
 
- 
-    m_TrayMenu.addAction(QObject::tr("关于"), []() { qDebug()<<"Application About."; qApp->aboutQt(); });
-    m_TrayMenu.addAction(QObject::tr("退出"), []() { qDebug()<<"Application Exit."; qApp->exit(); });
+    m_TrayMenu.addAction(QIcon(":info.png"), QObject::tr("关于"), []() { qDebug()<<"Application About."; qApp->aboutQt(); });
+    m_TrayMenu.addAction(QIcon(":exit.jpg"), QObject::tr("退出"), []() { qDebug()<<"Application Exit."; qApp->exit(); });
 
     m_SystemTray.setObjectName("FloatButton");
     m_SystemTray.setIcon(QIcon(icon));

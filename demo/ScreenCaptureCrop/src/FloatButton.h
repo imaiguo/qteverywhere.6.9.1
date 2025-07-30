@@ -44,7 +44,6 @@ private:
 
 protected:
     void paintEvent(QPaintEvent* e) override;
-	void moveAnimation(int x, int y);
 
 signals:
 	void clicked();

@@ -70,8 +70,8 @@ bool FloatButton::initUI(QString icon){
     m_SystemTray.setContextMenu(&m_TrayMenu);
     m_SystemTray.show();
 
-    m_Tip.setText("截图");
-    m_Tip.resize(46, Config::ButtonSize);
+    m_Tip.setText("截图 Alt+Q");
+    m_Tip.resize(94, Config::ButtonSize);
 
     int x = screenRect.width() - Config::PaddingSide - Config::WindowSize;
     int y = screenRect.height() - Config::PaddingBottom - Config::WindowSize;

@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMessageBox>
+#include <QStandardPaths>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QScreen>
 #else
@@ -126,8 +127,10 @@ void ScreenWidget::ok(){
 }
 
 void ScreenWidget::saveFullScreen(){
-    QString name = QString("%1.png").arg(STRDATETIME);
-    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
+    // QString name = QString("%1.png").arg(STRDATETIME);
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    desktopPath.append(QString("/%1.png").arg(STRDATETIME));
+    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", desktopPath, "png Files (*.png)");
     if (fileName.length() > 0) {
         if (!fileName.endsWith(".png"))
             fileName += ".png";
@@ -146,8 +149,10 @@ void ScreenWidget::save(){
         return;
     }
 
-    QString name = QString("%1.png").arg(STRDATETIME);
-    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
+    // QString name = QString("%1.png").arg(STRDATETIME);
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    desktopPath.append(QString("/%1.png").arg(STRDATETIME));
+    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", desktopPath, "png Files (*.png)");
     if (fileName.length() > 0) {
         if (!fileName.endsWith(".png"))
             fileName += ".png";

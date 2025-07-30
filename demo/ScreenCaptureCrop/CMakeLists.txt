@@ -28,9 +28,13 @@ set(SRC
         ./src/RoundTip.cpp
         ./src/Tools.cpp
         ./src/FloatButton.cpp
+        ./src/hotkey/NativeEventFilter.cpp
+        ./src/hotkey/ShortcutRegister.cpp
         icon.rc
         ScreenCapture.qrc
 )
+
+include_directories(./src/hotkey)
 
 add_executable(${APPNAME} WIN32
     ${SRC}

@@ -16,7 +16,6 @@ project(${APPNAME} LANGUAGES CXX)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS network REQUIRED)
 
 message("current Qt version is[" ${QT_VERSION_MAJOR}  "]")
 
@@ -29,10 +28,11 @@ set(SRC
         ./src/RoundTip.cpp
         ./src/Tools.cpp
         ./src/FloatButton.cpp
+        icon.rc
         ScreenCapture.qrc
 )
 
-add_executable(${APPNAME}
+add_executable(${APPNAME} WIN32
     ${SRC}
 )
 

@@ -22,7 +22,8 @@
 
 ButtonWithTip::ButtonWithTip(QWidget *parent) : QLabel(parent){
 	setMouseTracking(true);
-	setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
+	// setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::Tool);
 	setAttribute(Qt::WA_TranslucentBackground, true);
 	resize(Config::ButtonSize/2, Config::ButtonSize/2);
 }
@@ -53,6 +54,7 @@ bool ButtonWithTip::initUI(QString icon){
 	m_iconPress = QPixmap::fromImage(imagePress);
 
     m_Name = "友好提示";
+    m_Tip.hide();
 	return true;
 }
 
@@ -70,9 +72,10 @@ void ButtonWithTip::mousePressEvent(QMouseEvent *e){
 
 
 void ButtonWithTip::mouseReleaseEvent(QMouseEvent *ev){
-    QMessageBox::information(this, m_Name, "功能正努力实现中...");
+    // QMessageBox::information(this, m_Name, "功能正努力实现中...");
 
     setPixmap(m_iconEnter);
+    emit clicked();
     QLabel::mouseReleaseEvent(ev);
 }
 
@@ -105,4 +108,9 @@ void ButtonWithTip::paintEvent(QPaintEvent* e){
         painter.setClipPath(path);
         painter.drawPixmap(0, 0, width(), height(), pixmap());
     }
+}
+
+void ButtonWithTip::hideEvent(QHideEvent *event){
+    m_Tip.hide();
+    QLabel::hideEvent(event);
 }

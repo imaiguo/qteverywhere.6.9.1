@@ -28,6 +28,7 @@ set(SRC
         ./src/ButtonWithTip.cpp
         ./src/RoundTip.cpp
         ./src/Tools.cpp
+        ./src/FloatButton.cpp
         ScreenCapture.qrc
 )
 
@@ -37,5 +38,4 @@ add_executable(${APPNAME}
 
 target_link_libraries(${APPNAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Network
 )

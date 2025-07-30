@@ -10,6 +10,7 @@ class Menu: public QWidget{
 public:
     explicit Menu(QWidget *parent = nullptr);
     bool initUI();
+    void initConnection();
 
 private:
     ButtonWithTip m_btnOK;

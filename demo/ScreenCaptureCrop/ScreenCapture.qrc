@@ -4,5 +4,7 @@
 	<file alias="ok.png">./image/OkDone_80.contrast-white.png</file>
 	<file alias="fullscreen.png">./image/DisplaySystemToastIcon.contrast-white.png</file>
 	<file alias="crop.png">./image/NearShare.contrast-white_scale-200.png</file>
+	<file alias="floatbutton.png">./image/WLive48x48.png</file>
+	<file alias="deskcut.jpg">./image/deskcut.jpg</file>
 </qresource>
 </RCC>

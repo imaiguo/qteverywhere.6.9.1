@@ -25,16 +25,19 @@ private:
     Menu m_FloatMenu;
 
 protected:
-    void contextMenuEvent(QContextMenuEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
-    void showEvent(QShowEvent *);
+    void contextMenuEvent(QContextMenuEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void paintEvent(QPaintEvent *) override;
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *event) override;
 
-private slots:
-    void saveScreenCrop();
-    void saveScreenCropToPath();
+public slots:
+    void ok();
+    void save();
     void saveFullScreen();
-    void saveFullToPath();
+
+signals:
+    void hide();
 };

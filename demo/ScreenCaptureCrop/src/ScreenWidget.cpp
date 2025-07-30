@@ -9,6 +9,7 @@
 #include <QMimeData>
 #include <QApplication>
 #include <QClipboard>
+#include <QMessageBox>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QScreen>
 #else
@@ -23,14 +24,15 @@
 #define STRDATETIME qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
 
 ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
+    // 调试时注释如下一行代码
+    // setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
 
     // TODO 添加icon图片
     m_menu = new QMenu(this);
-    m_menu->addAction("确认", this, &ScreenWidget::saveScreenCrop);
-    m_menu->addAction("保存", this, &ScreenWidget::saveScreenCropToPath);
-    m_menu->addAction("保存全屏", this, &ScreenWidget::saveFullToPath);
-    m_menu->addAction("取消", this, &ScreenWidget::saveFullScreen);
+    m_menu->addAction("确认", this, &ScreenWidget::ok);
+    m_menu->addAction("保存", this, &ScreenWidget::save);
+    m_menu->addAction("保存全屏", this, &ScreenWidget::saveFullScreen);
+    m_menu->addAction("取消", this, [this](){this->setHidden(true);});
     //取得屏幕大小
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QRect screenRect = QApplication::primaryScreen()->geometry();
@@ -77,6 +79,7 @@ void ScreenWidget::paintEvent(QPaintEvent *){
 }
 
 void ScreenWidget::showEvent(QShowEvent *){
+    // 每次重新显示截图蒙版 重置m_screen区域
     QPoint point(-1, -1);
     m_screen->setStart(point);
     m_screen->setEnd(point);
@@ -91,15 +94,28 @@ void ScreenWidget::showEvent(QShowEvent *){
     m_bgScreen = new QPixmap(*m_fullScreen);
     QPainter p(m_bgScreen);
     p.drawPixmap(0, 0, pix);
+
+    //取得屏幕大小
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QRect screenRect = QApplication::primaryScreen()->geometry();
+#else
+    QRect screenRect = QApplication::desktop()->screenGeometry();
+#endif
+    m_FloatMenu.move(screenRect.width() - 180 - 50, screenRect.height() - Config::ButtonSize*2);
 }
 
-void ScreenWidget::saveScreenCrop(){
+void ScreenWidget::ok(){
     int x = m_screen->getLeftUp().x();
     int y = m_screen->getLeftUp().y();
     int w = m_screen->getRightDown().x() - x;
     int h = m_screen->getRightDown().y() - y;
 
-    QString fileName = QString("%1/screen_%2.png").arg(qApp->applicationDirPath()).arg(STRDATETIME);
+    if(w < 1 || h < 1 ){
+        qDebug() << "所选区域无效";
+        return;
+    }
+
+    QString fileName = QString("%1/save/screen_%2.png").arg(qApp->applicationDirPath()).arg(STRDATETIME);
     QPixmap tmp = m_fullScreen->copy(x, y, w, h);
     tmp.save(fileName, "png");
 
@@ -107,16 +123,21 @@ void ScreenWidget::saveScreenCrop(){
     QMimeData * mimeData = new QMimeData;
     mimeData->setImageData(tmp.toImage());
     qApp->clipboard()->setMimeData(mimeData);
-    hide();
+    setHidden(true);
 }
 
 void ScreenWidget::saveFullScreen(){
-    QString fileName = QString("%1/full_%2.png").arg(qApp->applicationDirPath()).arg(STRDATETIME);
-    m_fullScreen->save(fileName, "png");
-    hide();
+    QString name = QString("%1.png").arg(STRDATETIME);
+    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
+    if (fileName.length() > 0) {
+        if (!fileName.endsWith(".png"))
+            fileName += ".png";
+        m_fullScreen->save(fileName, "png");
+        setHidden(true);
+    }
 }
 
-void ScreenWidget::saveScreenCropToPath(){
+void ScreenWidget::save(){
     QString name = QString("%1.png").arg(STRDATETIME);
     QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
     if (fileName.length() > 0) {
@@ -127,19 +148,7 @@ void ScreenWidget::saveScreenCropToPath(){
         int w = m_screen->getRightDown().x() - x;
         int h = m_screen->getRightDown().y() - y;
         m_fullScreen->copy(x, y, w, h).save(fileName, "png");
-        hide();
-    }
-}
-
-void ScreenWidget::saveFullToPath(){
-    QString name = QString("%1.png").arg(STRDATETIME);
-    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
-
-    if (fileName.length() > 0) {
-        if (!fileName.endsWith(".png"))
-            fileName += ".png";
-        m_fullScreen->save(fileName, "png");
-        hide();
+        setHidden(true);
     }
 }
 
@@ -184,4 +193,10 @@ void ScreenWidget::mouseReleaseEvent(QMouseEvent *){
 void ScreenWidget::contextMenuEvent(QContextMenuEvent *){
     this->setCursor(Qt::ArrowCursor);
     m_menu->exec(cursor().pos());
+}
+
+void ScreenWidget::hideEvent(QHideEvent *event){
+    qDebug() << "ScreenWidget::hideEvent called..." ;
+    emit hide();
+    QWidget::hideEvent(event);
 }

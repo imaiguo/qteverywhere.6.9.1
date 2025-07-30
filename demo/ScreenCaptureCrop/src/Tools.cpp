@@ -67,9 +67,9 @@ void OutputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 }
 
 bool RunOnce(){
-    QSystemSemaphore sema("LittleBlueHelper", 1, QSystemSemaphore::Open);
+    QSystemSemaphore sema("LittleFloatButton", 1, QSystemSemaphore::Open);
     sema.acquire();
-    static QSharedMemory mem("LittleBlueHelperShareMemory");
+    static QSharedMemory mem("LittleFloatButtonShareMemory");
     bool result = mem.create(1, QSharedMemory::ReadOnly);
     qDebug() << result;
     sema.release();

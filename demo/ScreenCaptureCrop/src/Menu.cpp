@@ -2,6 +2,8 @@
 #include "Menu.h"
 #include "Config.h"
 
+#include "ScreenWidget.h"
+
 Menu::Menu(QWidget *parent):QWidget(parent){
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
     resize(180, Config::ButtonSize);
@@ -43,5 +45,14 @@ bool Menu::initUI(){
     m_btnFullSave.move(pos, 10);
     m_btnFullSave.reSizeTipWidth(78);
 
+    initConnection();
     return true;
+}
+
+void Menu::initConnection(){
+    ScreenWidget* widget = (ScreenWidget*)parent();
+    connect(&m_btnOK, &ButtonWithTip::clicked, widget, &ScreenWidget::ok);
+    connect(&m_btnCropSave, &ButtonWithTip::clicked, widget, &ScreenWidget::save);
+    connect(&m_btnFullSave, &ButtonWithTip::clicked, widget, &ScreenWidget::saveFullScreen);
+    connect(&m_btnClose, &ButtonWithTip::clicked, widget, [widget](){widget->setHidden(true);});
 }

@@ -8,6 +8,5 @@
 	<file alias="deskcut.jpg">./image/deskcut.jpg</file>
 	<file alias="exit.jpg">./image/exit.780.jpg</file>
 	<file alias="info.png">./image/info.R-C.png</file>
-	
 </qresource>
 </RCC>

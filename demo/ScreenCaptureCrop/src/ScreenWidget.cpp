@@ -21,13 +21,12 @@
 #include "ScreenWidget.h"
 #include "Config.h"
 
-#define STRDATETIME qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
+#define STRDATETIME qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HHmmss"))
 
 ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
     // 调试时注释如下一行代码
-    // setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::Tool);
 
-    // TODO 添加icon图片
     m_menu = new QMenu(this);
     m_menu->addAction(QIcon(":ok.png"), "确认", this, &ScreenWidget::ok);
     m_menu->addAction(QIcon(":crop.png"), "保存", this, &ScreenWidget::save);
@@ -110,7 +109,7 @@ void ScreenWidget::ok(){
     int w = m_screen->getRightDown().x() - x;
     int h = m_screen->getRightDown().y() - y;
 
-    if(w < 1 || h < 1 ){
+    if(w < 10 || h < 10 ){
         qDebug() << "所选区域无效";
         return;
     }
@@ -138,15 +137,20 @@ void ScreenWidget::saveFullScreen(){
 }
 
 void ScreenWidget::save(){
+    int x = m_screen->getLeftUp().x();
+    int y = m_screen->getLeftUp().y();
+    int w = m_screen->getRightDown().x() - x;
+    int h = m_screen->getRightDown().y() - y;
+    if(w < 10 || h < 10 ){
+        qDebug() << "所选区域无效";
+        return;
+    }
+
     QString name = QString("%1.png").arg(STRDATETIME);
     QString fileName = QFileDialog::getSaveFileName(this, "保存图片", name, "png Files (*.png)");
     if (fileName.length() > 0) {
         if (!fileName.endsWith(".png"))
             fileName += ".png";
-        int x = m_screen->getLeftUp().x();
-        int y = m_screen->getLeftUp().y();
-        int w = m_screen->getRightDown().x() - x;
-        int h = m_screen->getRightDown().y() - y;
         m_fullScreen->copy(x, y, w, h).save(fileName, "png");
         setHidden(true);
     }

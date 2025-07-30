@@ -72,7 +72,8 @@ void ScreenWidget::paintEvent(QPaintEvent *){
     painter.drawText(x + 2, y - 8, tr("截图范围：( %1 x %2 ) - ( %3 x %4 )  图片大小：( %5 x %6 )")
                      .arg(x).arg(y).arg(x + w).arg(y + h).arg(w).arg(h));
 
-    m_FloatMenu.move(m_screen->getRightDown().x() - 180, m_screen->getRightDown().y());
+    if(w > 0)
+        m_FloatMenu.move(m_screen->getRightDown().x() - 180, m_screen->getRightDown().y());
 }
 
 void ScreenWidget::showEvent(QShowEvent *){

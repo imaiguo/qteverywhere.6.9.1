@@ -24,11 +24,10 @@ int main(int argc, char *argv[]){
 	}
 
     // 注册热键
-    NativeEventFilter filter(MOD_ALT,'Q');
-    app.installNativeEventFilter(&filter);
     ShortcutRegister reg;
+    NativeEventFilter filter(MOD_ALT,'Q', &reg);
+    app.installNativeEventFilter(&filter);
     reg.registerShortcut(filter);
-    filter.setRegister(&reg);
 
     // 创建悬浮按钮
     FloatButton btn;

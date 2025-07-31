@@ -13,6 +13,14 @@
 >
 ```
 
+
+## TODO
+
+- 1. 截屏时添加 Esc快捷键 取消截屏
+- 2. 支持Debian操作系统
+
+
 ## 参考
 
 - https://blog.51cto.com/u_6343747/5551990
+- https://zhuanlan.zhihu.com/p/212230990

@@ -4,9 +4,9 @@
 
 #include <QDebug>
 
-NativeEventFilter::NativeEventFilter(const unsigned int& mod, const unsigned int& key){
-    this->mod = mod;
-    this->key = key;
+NativeEventFilter::NativeEventFilter(const unsigned int& argMod, const unsigned int& argKey, ShortcutRegister * reg):m_register(reg){
+    mod = argMod;
+    key = argKey;
 }
 
 bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result){
@@ -21,8 +21,4 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
     }
 
     return false;
-}
-
-void NativeEventFilter::setRegister(ShortcutRegister * reg){
-    m_register = reg;
 }

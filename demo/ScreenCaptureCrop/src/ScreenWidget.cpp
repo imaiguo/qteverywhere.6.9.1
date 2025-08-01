@@ -1,5 +1,6 @@
 
 #include <QPainter>
+#include <QShortcut>
 #include <QFileDialog>
 #include <QMutex>
 #include <QMutexLocker>
@@ -46,6 +47,18 @@ ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent){
     m_FloatMenu.setParent(this);
     m_FloatMenu.initUI();
     m_FloatMenu.move(screenRect.width() - 180 - 50, screenRect.height() - Config::ButtonSize*2);
+
+    QShortcut *m_EscCut = new QShortcut(tr("Esc"), this);
+    m_EscCut->setAutoRepeat(false);
+
+    QShortcut *m_Return = new QShortcut(Qt::Key_Return, this);
+    QShortcut *m_Enter = new QShortcut(Qt::Key_Enter, this);
+    m_Enter->setAutoRepeat(false);
+    m_Return->setAutoRepeat(false);
+
+    connect(m_EscCut, &QShortcut::activated, this, [this](){this->setHidden(true);});
+    connect(m_Return, &QShortcut::activated, this, [this](){qDebug()<< "QKeySequence(Qt::Key_Return) actived."; this->ok();});
+    connect(m_Enter, &QShortcut::activated, this, [this](){qDebug()<< "QKeySequence(Qt::Key_Enter) actived."; this->ok();});
 }
 
 void ScreenWidget::paintEvent(QPaintEvent *){
@@ -71,14 +84,13 @@ void ScreenWidget::paintEvent(QPaintEvent *){
 
     pen.setColor(Qt::blue);
     painter.setPen(pen);
-    painter.drawText(x + 2, y - 8, tr("截图范围：( %1 x %2 ) - ( %3 x %4 )  图片大小：( %5 x %6 )")
-                     .arg(x).arg(y).arg(x + w).arg(y + h).arg(w).arg(h));
+    painter.drawText(x + 2, y - 8, tr("截图范围：( %1 x %2 ) - ( %3 x %4 )  图片大小：( %5 x %6 )").arg(x).arg(y).arg(x + w).arg(y + h).arg(w).arg(h));
 
     if(w > 0)
         m_FloatMenu.move(m_screen->getRightDown().x() - 180, m_screen->getRightDown().y());
 }
 
-void ScreenWidget::showEvent(QShowEvent *){
+void ScreenWidget::showEvent(QShowEvent *ev){
     // 每次重新显示截图蒙版 重置m_screen区域
     QPoint point(-1, -1);
     m_screen->setStart(point);
@@ -102,6 +114,7 @@ void ScreenWidget::showEvent(QShowEvent *){
     QRect screenRect = QApplication::desktop()->screenGeometry();
 #endif
     m_FloatMenu.move(screenRect.width() - 180 - 50, screenRect.height() - Config::ButtonSize*2);
+    QWidget::showEvent(ev);
 }
 
 void ScreenWidget::ok(){
@@ -161,42 +174,47 @@ void ScreenWidget::save(){
     }
 }
 
-void ScreenWidget::mouseMoveEvent(QMouseEvent *e){
+void ScreenWidget::mouseMoveEvent(QMouseEvent *ev){
     if (m_screen->getStatus() == Screen::SELECT) {
-        m_screen->setEnd(e->pos());
+        m_screen->setEnd(ev->pos());
     } else if (m_screen->getStatus() == Screen::MOV) {
-        QPoint p(e->x() - m_movePos.x(), e->y() - m_movePos.y());
+        QPoint p(ev->x() - m_movePos.x(), ev->y() - m_movePos.y());
         m_screen->move(p);
-        m_movePos = e->pos();
+        m_movePos = ev->pos();
     }
 
-    this->update();
+    update();
+    QWidget::mouseMoveEvent(ev);
 }
 
-void ScreenWidget::mousePressEvent(QMouseEvent *e){
+void ScreenWidget::mousePressEvent(QMouseEvent *ev){
     int m_status = m_screen->getStatus();
 
     if (m_status == Screen::SELECT) {
-        m_screen->setStart(e->pos());
+        m_screen->setStart(ev->pos());
     } else if (m_status == Screen::MOV) {
-        if (m_screen->isInArea(e->pos()) == false) {
-            m_screen->setStart(e->pos());
+        if (m_screen->isInArea(ev->pos()) == false) {
+            m_screen->setStart(ev->pos());
             m_screen->setStatus(Screen::SELECT);
         } else {
-            m_movePos = e->pos();
-            this->setCursor(Qt::SizeAllCursor);
+            m_movePos = ev->pos();
+            setCursor(Qt::SizeAllCursor);
         }
     }
 
-    this->update();
+    update();
+    QWidget::mousePressEvent(ev);
 }
 
-void ScreenWidget::mouseReleaseEvent(QMouseEvent *){
+void ScreenWidget::mouseReleaseEvent(QMouseEvent *ev){
     if (m_screen->getStatus() == Screen::SELECT) {
         m_screen->setStatus(Screen::MOV);
     } else if (m_screen->getStatus() == Screen::MOV) {
         this->setCursor(Qt::ArrowCursor);
     }
+
+    repaint();
+    QWidget::mouseReleaseEvent(ev);
 }
 
 void ScreenWidget::contextMenuEvent(QContextMenuEvent *){

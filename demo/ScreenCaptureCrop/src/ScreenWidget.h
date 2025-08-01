@@ -13,16 +13,19 @@ public:
     explicit ScreenWidget(QWidget *parent = 0);
 
 private:
-    QMenu *m_menu;
-    Screen *m_screen;
+    QMenu *m_menu  = nullptr;
+    Screen *m_screen  = nullptr;
     //保存全屏图像
-    QPixmap *m_fullScreen;
+    QPixmap *m_fullScreen = nullptr;
     //模糊背景图
-    QPixmap *m_bgScreen;      
+    QPixmap *m_bgScreen = nullptr;
     //坐标
     QPoint m_movePos;
     // 悬浮菜单
     Menu m_FloatMenu;
+
+    // 屏幕缩放
+    float m_Scale = 0.0;
 
 protected:
     void contextMenuEvent(QContextMenuEvent *) override;

@@ -16,7 +16,6 @@ project(${APPNAME} LANGUAGES CXX)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS network REQUIRED)
 
 message("current Qt version is[" ${QT_VERSION_MAJOR}  "]")
 
@@ -31,5 +30,4 @@ add_executable(${APPNAME}
 
 target_link_libraries(${APPNAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Network
 )

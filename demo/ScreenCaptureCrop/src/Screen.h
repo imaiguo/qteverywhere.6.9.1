@@ -23,6 +23,7 @@ public:
     STATUS getStatus();
     void setStatus(STATUS m_status);
 
+    void setSize(QSize size);
     int width();
     int height();
     // 检测pos是否在截图区域内

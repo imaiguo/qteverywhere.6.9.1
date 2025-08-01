@@ -100,11 +100,12 @@ void ScreenWidget::showEvent(QShowEvent *ev){
     m_screen->setEnd(point);
 
     QScreen *pscreen = QApplication::primaryScreen();
+    m_screen->setSize(pscreen->size());
     // qDebug() << "--pscreen->size():" << pscreen->size();
     // qDebug() << "--pscreen->geometry():" << pscreen->geometry();
 
     // *m_fullScreen = pscreen->grabWindow(0, 0, 0, m_screen->width(), m_screen->height());
-    *m_fullScreen = pscreen->grabWindow((WId)GetDesktopWindow(), 0, 0, m_screen->width(), m_screen->height());
+    *m_fullScreen = pscreen->grabWindow((WId)GetDesktopWindow(), 0, 0, pscreen->size().width(), pscreen->size().height());
     qDebug() << "m_fullScreen->size():" << m_fullScreen->size();
     qDebug() << "pscreen->size():" << pscreen->size();
     m_Scale = (m_fullScreen->size().width()*1.0) / (pscreen->size().width()*1.0);

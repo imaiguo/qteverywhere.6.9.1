@@ -34,6 +34,11 @@ int Screen::height(){
     return m_maxHeight;
 }
 
+void Screen::setSize(QSize size){
+    m_maxWidth = size.width();
+    m_maxHeight = size.height();
+}
+
 Screen::STATUS Screen::getStatus(){
     return m_status;
 }

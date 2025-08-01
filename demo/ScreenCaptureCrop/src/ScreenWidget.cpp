@@ -18,7 +18,6 @@
 #include <QDesktopWidget>
 #endif
 
-// #include <atlimage.h>
 #include <Windows.h>
 
 #include "ScreenWidget.h"
@@ -80,9 +79,7 @@ void ScreenWidget::paintEvent(QPaintEvent *){
 
     // 绘画被选中图片
     if (w != 0 && h != 0) {
-        // QPixmap pix = m_fullScreen->scaled(m_fullScreen->size()/m_Scale);
-        // qDebug() << "pix.size():" << pix.size();
-        painter.drawPixmap(x, y, m_fullScreen->copy(x, y, w, h));
+        painter.drawPixmap(x, y, m_fullScreen->copy(x*m_Scale, y*m_Scale, w*m_Scale, h*m_Scale));
     }
 
     // 绘画虚线矩形
@@ -95,39 +92,6 @@ void ScreenWidget::paintEvent(QPaintEvent *){
     if(w > 0)
         m_FloatMenu.move(m_screen->getRightDown().x() - 180, m_screen->getRightDown().y());
 }
-
-// QImage GetDesktopCapture(){
-//     int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-//     int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-
-//     // 获取窗口的设备上下文（Device Contexts）
-//     HDC hdcWindow = GetDC(GetDesktopWindow());  // 要截图的窗口句柄，为空则全屏
-//     // 获取设备相关信息的尺寸大小
-//     int nBitPerPixel = GetDeviceCaps(hdcWindow, BITSPIXEL);
-//     CImage image;
-//     image.Create(width, height, nBitPerPixel);
-//     BitBlt(image.GetDC(), // 保存到的目标 图片对象 上下文
-//            0, 0,     // 起始 x, y 坐标
-//            width, height,  // 截图宽高
-//            hdcWindow,      // 截取对象的 上下文句柄
-//            0,0,
-//            /*m_pParentView->x(), m_pParentView->y(),*/           // 指定源矩形区域左上角的 X, y 逻辑坐标
-//            SRCCOPY
-//            );
-//     // 释放 DC句柄
-//     ReleaseDC(nullptr, hdcWindow);
-//     // 释放图片上下文
-//     image.ReleaseDC();
-//     WCHAR wfile[256];
-//     memset(wfile,0, sizeof(wfile));
-//     CString cPath = L"tmp.png";
-//     HRESULT result = image.Save(cPath, Gdiplus::ImageFormatPNG);
-//     QImage shot = QImage("tmp.png");
-//     return shot;
-//     // QMimeData * mimeData = new QMimeData;
-//     // mimeData->setImageData(shot);
-//     // qApp->clipboard()->setMimeData(mimeData);
-// }
 
 void ScreenWidget::showEvent(QShowEvent *ev){
     // 每次重新显示截图蒙版 重置m_screen区域
@@ -142,14 +106,13 @@ void ScreenWidget::showEvent(QShowEvent *ev){
     // *m_fullScreen = pscreen->grabWindow(0, 0, 0, m_screen->width(), m_screen->height());
     *m_fullScreen = pscreen->grabWindow((WId)GetDesktopWindow(), 0, 0, m_screen->width(), m_screen->height());
     qDebug() << "m_fullScreen->size():" << m_fullScreen->size();
-    qDebug() << "m_fullScreen->size().width:" << m_fullScreen->size().width();
-    qDebug() << "--pscreen->size():" << pscreen->size();
-    qDebug() << "--pscreen->size().width():" << pscreen->size().width();
+    qDebug() << "pscreen->size():" << pscreen->size();
     m_Scale = (m_fullScreen->size().width()*1.0) / (pscreen->size().width()*1.0);
     qDebug() << "scaled =" << m_Scale;
     
     //设置透明度实现模糊背景
-    QPixmap pix(m_screen->width(), m_screen->height());
+    // QPixmap pix(m_screen->width(), m_screen->height());
+    QPixmap pix(m_fullScreen->size());
     pix.fill((QColor(160, 160, 160, 200)));
     m_bgScreen = new QPixmap(*m_fullScreen);
     QPainter p(m_bgScreen);
@@ -177,7 +140,7 @@ void ScreenWidget::ok(){
     }
 
     QString fileName = QString("%1/save/screen_%2.png").arg(qApp->applicationDirPath()).arg(STRDATETIME);
-    QPixmap tmp = m_fullScreen->copy(x, y, w*m_Scale, h*m_Scale);
+    QPixmap tmp = m_fullScreen->copy(x*m_Scale, y*m_Scale, w*m_Scale, h*m_Scale);
     tmp.save(fileName, "png");
 
     // 存储到剪切板
@@ -217,7 +180,7 @@ void ScreenWidget::save(){
     if (fileName.length() > 0) {
         if (!fileName.endsWith(".png"))
             fileName += ".png";
-        m_fullScreen->copy(x, y, w*m_Scale, h*m_Scale).save(fileName, "png");
+        m_fullScreen->copy(x*m_Scale, y*m_Scale, w*m_Scale, h*m_Scale).save(fileName, "png");
         setHidden(true);
     }
 }

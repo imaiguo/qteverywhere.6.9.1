@@ -26,3 +26,6 @@
 
 - https://blog.51cto.com/u_6343747/5551990
 - https://zhuanlan.zhihu.com/p/212230990
+
+- https://gitee.com/Mr_ChenLuYong/screenshot
+- git@github.com:SkyD666/SmartScreenSnapper.git

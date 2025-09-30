@@ -24,6 +24,7 @@
 
 ## 参考
 
+- High DPI https://doc.qt.io/qt-6/highdpi.html
 - https://blog.51cto.com/u_6343747/5551990
 - https://zhuanlan.zhihu.com/p/212230990
 

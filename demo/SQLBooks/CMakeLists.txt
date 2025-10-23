@@ -9,9 +9,9 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Sql Widgets)
 qt_standard_project_setup()
 
 qt_add_executable(books
-    bookdelegate.cpp bookdelegate.h
-    bookwindow.cpp bookwindow.h
-    initdb.h
+    src/bookdelegate.cpp src/bookdelegate.h
+    src/bookwindow.cpp src/bookwindow.h
+    src/initdb.h
     main.cpp
 )
 

@@ -60,8 +60,7 @@ const auto INSERT_GENRE_SQL = QLatin1String(R"(
     insert into genres(name) values(?)
     )");
 
-QSqlError initDb()
-{
+QSqlError initDb(){
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(":memory:");
 
